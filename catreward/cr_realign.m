@@ -21,10 +21,10 @@ function cr_realign(dir_path),
 	% REALIGN, do it for all functional data.
 	% Get all file names and volumne counts for each
 	% of the functional sets, in order.
-	func_names = {'pavlov' 'taskA' 'taskB' 'coaster_localizer'}
-	allf = {}
+	func_names = {'pavlov' 'taskA' 'taskB' 'coaster_localizer'};
+	allf = {};
 	for ii=1:size(func_names,2),
-		func_name = func_names{ii}
+		func_name = func_names{ii};
 		cf = cellstr(spm_select( ...
 			'ExtList', dir_path, ['^' func_name '.*\.nii$'], 1:10000));
 		allf = cat(1,allf,cf);

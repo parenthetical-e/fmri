@@ -4,6 +4,7 @@ Wrap the catreward (cr) spm8 functions, allowing for easy
 """
 from subprocess import call, Popen, PIPE
 
+
 def _matlab(cmd):
 	""" Run <cmd> in matlab.  Return anything printed to stdout. """
 	p = Popen(cmd,shell=True,stdin=PIPE,stdout=PIPE,close_fds=True)
@@ -13,13 +14,26 @@ def _matlab(cmd):
 	return stdout
 
 
+def _matlab_base_cmd():
+	""" Use sys.platform to set the base matlab command. """
+	import sys
+	
+	if sys.platform == 'darwin':
+		return "matlab -nodesktop -maci -nosplash -nodisplay -r "
+			## OS X
+	elif sys.platform == 'linux2':
+		return "matlab -nodesktop -nosplash -nodisplay -r "
+			## This will be a EC2 node....
+	else:
+		raise EnvironmentError('Platform is unsupported.')
+
+
 def cr_ana(dir_path):
 	""" Matlab wrapper. Run cr_ana.m for the dir specified in 
 	<dir_path>."""
 
-	cmd = "matlab -nodesktop -maci -nosplash -nodisplay -r "
+	cmd = _matlab_base_cmd()
 	cmd = cmd + "\"cr_ana('{0}'".format(dir_path) + ")\""
-	print(cmd)
 	stdout = _matlab(cmd) 
 	
 	return stdout
@@ -29,20 +43,22 @@ def cr_realign(dir_path):
 	""" Matlab wrapper. Run cr_realign.m for the dir specified in 
 	<dir_path>."""
 
-	cmd = "matlab -nodesktop -maci -nosplash -nodisplay -r "
+	cmd = _matlab_base_cmd()
 	cmd = cmd + "\"cr_realign('{0}'".format(dir_path) + ")\""
-	
-	return _matlab(cmd) # returns stdout
+	stdout = _matlab(cmd)
+
+	return stdout # returns stdout
 
 
 def cr_func(dir_path,func_name):
 	""" Matlab wrapper. Run cr_func.m on the functional data 
 	(<func_name>) specified in <dir_path>."""
 
-	cmd = "matlab -nodesktop -maci -nosplash -nodisplay -r "
+	cmd = _matlab_base_cmd()
 	cmd = cmd + "\"cr_func('{0}','{1}'".format(dir_path,func_name) + ")\""
-	
-	return _matlab(cmd) # returns stdout
+	stdout = _matlab(cmd)
+
+	return stdout # returns stdout
 
 
 def make_batch(subfile='sub.csv',funcfile='func.csv'):
@@ -69,18 +85,20 @@ def make_batch(subfile='sub.csv',funcfile='func.csv'):
 
 	# Each entry in each bacth should work inside
 	# run, e.g. fmri.catreward.spm.run(batch1[0],batch1[1:])
-	batch1 = []  ## cr_ana and cr_realign are independent of each other
-	batch2 = []  ## cr_func (require batch1 data)
+	batch1 = []  
+	batch2 = []
+		## cr_ana and cr_realign are independent of each other
+	batch3 = []  
+		## cr_func (require batch1 data)
 	for s in subnames:
 		spath = os.path.abspath(s)
 		# Make a tuple like:
 		# ('spm_function_name','arg1','arg2', ...)
 		batch1.append(('cr_ana',s))
-		batch1.append(('cr_realign',s))
-		
-		[batch2.append(('cr_func',s,f)) for f in funcnames]
+		batch2.append(('cr_realign',s))
+		[batch3.append(('cr_func',s,f)) for f in funcnames]
 			
-	return batch1, batch2
+	return batch1, batch2, batch3
 
 
 def run(args=()):
@@ -96,7 +114,7 @@ def run(args=()):
 	# with args inside.
 	try:
 		print('Trying {0}.'.format(args))
-		
+
 		if len(args) == 2:
 			stdout = getattr(spm, args[0])(args[1])
 		else:
