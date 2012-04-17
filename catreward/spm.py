@@ -95,6 +95,8 @@ def run(args=()):
 	# Try and get function name (arg 0) on spm then call it
 	# with args inside.
 	try:
+		print('Trying {0}.'.format(args))
+		
 		if len(args) == 2:
 			stdout = getattr(spm, args[0])(args[1])
 		else:
