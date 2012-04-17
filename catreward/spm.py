@@ -67,8 +67,9 @@ def make_batch(subfile='sub.csv',funcfile='func.csv'):
 	a tuple of two lists of all functions and their arguements for 
 	both the first and second batchs.
 
-	batch1 = []  - cr_ana and cr_realign are independent of each other
-	batch2 = []  - cr_func (requires batch1 data)
+	batch1 = []  - cr_ana and 
+	batch2 = []  - cr_realign are independent of each other
+	batch3 = []  - cr_func (requires batch1 data)
 	"""
 	import csv
 	import os
