@@ -1,0 +1,22 @@
+(0) Drop first 6 vols from all functional data for all Ss
+* Use fmri.nii.drop_vols(), sub.csv and func.csv
+
+(1) Realign
+* matlabbatch{2}.spm.spatial.realign.estwrite.roptions.prefix = 'r';
+
+(2) Functional slice time correction
+* matlabbatch{3}.spm.temporal.st.prefix = 'a';
+
+(3) Functional to anatomical coregistration
+* Use normalized mutual information
+* Reslice using 4 beta?
+
+(4a) Norm ana.nii to T1.nii (est and reslice)
+
+(4b) Norm all functional by (4) params
+'w'
+
+(5) Functional smooth (6mm)
+'s'
+
+final 'swar*'

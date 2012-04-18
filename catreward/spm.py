@@ -4,7 +4,6 @@ Wrap the catreward (cr) spm8 functions, allowing for easy
 """
 from subprocess import call, Popen, PIPE
 
-
 def _matlab(cmd):
 	""" Run <cmd> in matlab.  Return anything printed to stdout. """
 	p = Popen(cmd,shell=True,stdin=PIPE,stdout=PIPE,close_fds=True)
@@ -64,12 +63,12 @@ def cr_func(dir_path,func_name):
 def make_batch(subfile='sub.csv',funcfile='func.csv'):
 	"""
 	Uses <subfile> (a 1d csv file) and <funcfile> (also 1d) to return 
-	a tuple of two lists of all functions and their arguements for 
-	both the first and second batchs.
+	three parallizable lists of batches.
 
+	Returns:
 	batch1 = []  - cr_ana and 
 	batch2 = []  - cr_realign are independent of each other
-	batch3 = []  - cr_func (requires batch1 data)
+	batch3 = []  - cr_func requires batch1,2 data
 	"""
 	import csv
 	import os
@@ -99,7 +98,7 @@ def make_batch(subfile='sub.csv',funcfile='func.csv'):
 		batch2.append(('cr_realign',s))
 		[batch3.append(('cr_func',s,f)) for f in funcnames]
 			
-	return batch1, batch2, batch3
+	return batch1,batch2,batch3
 
 
 def run(args=()):
@@ -121,7 +120,7 @@ def run(args=()):
 		else:
 			stdout = getattr(spm, args[0])(*args[1:])
 	except AttributeError:
-		print('<name> was not known.')
+		print('<name> was not known. Skipping.')
 
 	return stdout
 
