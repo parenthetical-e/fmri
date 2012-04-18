@@ -1,4 +1,3 @@
-#! /usr/local/bin/python
 """ 
 A module for manipulating and analysis of nifti files.
 """
