@@ -17,15 +17,18 @@ function cr_ana(dir_path),
 
 	% Get full ana name then SEGMENT (which also returns 
 	% normalization parameters for ana.nii - 'ana_seg_sn.mat')
-	a = spm_select('ExtList', dir_path, ['^ana.nii$'], 1:1000);
+	% a = spm_select('ExtList', dir_path, ['^ana.nii$'], 1:1000);
+	a = spm_select('FPList', dir_path, ['^ana.nii$']);
 	jobs{2}.spatial{1}.preproc.data = cellstr(a);
 
 	% then NORMALIZE and isovoxel ana.nii
-	jobs{2}.spatial{2}.normalise{1}.write.subj.matname  = editfilenames( ...
+	jobs{2}.spatial{1}.normalise{1}.write.subj.matname  = editfilenames( ...
 			a,'suffix','_seg_sn','ext','.mat');
-	jobs{2}.spatial{2}.normalise{1}.write.subj.resample = editfilenames( ...
+	jobs{2}.spatial{1}.normalise{1}.write.subj.resample = editfilenames( ...
 			a,'prefix','m');
-	jobs{2}.spatial{2}.normalise{1}.write.roptions.vox  = [1 1 1];
+	jobs{2}.spatial{1}.normalise{1}.write.roptions.vox  = [1 1 1];
+	jobs{2}.spatial{1}.normalise{1}.write.roptions.interp = 4;
+		%% 4th degree B spline
 
 	% RUN
 	spm_jobman('run',jobs);
