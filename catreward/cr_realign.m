@@ -36,5 +36,5 @@ function cr_realign(dir_path),
 		%% spm uses the first filename for the mean image,
 		%% but the mean imag will relfect all the functional data
 		%% do we rename it.
-	% exit
+	exit
 end

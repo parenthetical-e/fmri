@@ -1,9 +1,6 @@
 #! /usr/local/bin/python
 """ 
-A module for manipulating and analysis of nifti files.  
-
-If called from the CL, basic nifti info is printed recursively 
-for all files in the pwd.
+A module for manipulating and analysis of nifti files.
 """
 import os
 import nibabel as nb
@@ -37,7 +34,7 @@ def basics(nii=''):
 
 def drop_vol(n=6,nii='',backup=True):
 	""" 
-	Drop <n> vol from the list of nifti file(s), <nii>. 
+	Drop <n> vol from the nifti file, <nii>. 
 
 	If True <backup> the orginal nii as org<nii>.
 	"""
@@ -66,20 +63,17 @@ def drop_vol(n=6,nii='',backup=True):
 
 def loop(dir='.'):
 	""" 
-	Recursively loop over <dir>, printing out basic info for each .nii
-	encountered.
+	Recursively loop over <dir>, returning and printing basic info for
+	each .nii encountered.
 	"""
-
+	import pprint
+	
 	rootnode = os.path.abspath(dir)
 	loopinfo = {}
 	for root, subFolders, files in os.walk(rootnode,followlinks=True):
 		[loopinfo.update(basics(os.path.join(root,f))) for f in files]
 
+	pprint.pprint(sorted(loopinfo.items()))
+	
 	return loopinfo
 
-
-if __name__ == '__main__':
-	import pprint
-
-	niiinfo = loop()
-	pprint.pprint(sorted(niiinfo.items()))
