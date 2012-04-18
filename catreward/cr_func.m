@@ -48,14 +48,14 @@ function cr_func(dir_path,func_name),
 	jobs{3}.spatial{2}.normalise{1}.write.subj.resample = [editfilenames( ...
 			f,'prefix','ar'); {ff{1}}];
 	jobs{3}.spatial{2}.normalise{1}.write.roptions.vox  = [3 3 3];
-	jobs{2}.spatial{1}.normalise{1}.write.roptions.interp = 4;
+	jobs{3}.spatial{2}.normalise{1}.write.roptions.interp = 4;
 		%% 4th degree B spline
 	
 	% SMOOTHING
 	jobs{3}.spatial{3}.smooth.data = editfilenames(f,'prefix','war');
-	matlabbatch{1}.spm.spatial.smooth.fwhm = [6 6 6];
+	jobs{3}.spatial{3}.smooth.fwhm = [6 6 6];
 		%% Use 6 mm smoothing in place of the 8 default
-
+	
 	% Go!
 	spm_jobman('run',jobs);
 	

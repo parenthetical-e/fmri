@@ -7,14 +7,14 @@ from subprocess import call, Popen, PIPE
 def _matlab(cmd):
 	""" Run <cmd> in matlab.  Return anything printed to stdout. """
 	p = Popen(cmd,shell=True,stdin=PIPE,stdout=PIPE,close_fds=True)
-	p.wait()
+	# p.wait()
 	stdout = p.communicate()
 	
 	return stdout
 
 
 def _matlab_base_cmd():
-	""" Use sys.platform to set the base matlab command. """
+	""" Set the base matlab command. """
 	import sys
 	
 	if sys.platform == 'darwin':
@@ -28,8 +28,10 @@ def _matlab_base_cmd():
 
 
 def cr_ana(dir_path):
-	""" Matlab wrapper. Run cr_ana.m for the dir specified in 
-	<dir_path>."""
+	""" 
+	Matlab wrapper. Run cr_ana.m for the dir specified in 
+	<dir_path>.
+	"""
 
 	cmd = _matlab_base_cmd()
 	cmd = cmd + "\"cr_ana('{0}'".format(dir_path) + ")\""
@@ -39,25 +41,64 @@ def cr_ana(dir_path):
 	
 
 def cr_realign(dir_path):
-	""" Matlab wrapper. Run cr_realign.m for the dir specified in 
-	<dir_path>."""
+	""" 
+	Matlab wrapper. Run cr_realign.m for the dir specified in 
+	<dir_path>.
+	"""
+	from fmri.nii import drop_vol
 
 	cmd = _matlab_base_cmd()
 	cmd = cmd + "\"cr_realign('{0}'".format(dir_path) + ")\""
-	stdout = _matlab(cmd)
+	stdout = _matlab(cmd) 
 
-	return stdout # returns stdout
+	return stdout
 
 
 def cr_func(dir_path,func_name):
-	""" Matlab wrapper. Run cr_func.m on the functional data 
-	(<func_name>) specified in <dir_path>."""
+	""" 
+	Matlab wrapper. Run cr_func.m on the functional data 
+	(<func_name>) specified in <dir_path>.
+	"""
 
 	cmd = _matlab_base_cmd()
 	cmd = cmd + "\"cr_func('{0}','{1}'".format(dir_path,func_name) + ")\""
 	stdout = _matlab(cmd)
 
-	return stdout # returns stdout
+	return stdout
+
+
+def drop6(subfile='sub.csv',funcfile='func.csv'):
+	"""
+	Drop the first 6 volumes for every subject in
+	<subfile> in each entry in <funcfile>.  
+
+	Assumes every subject's data is in the 
+	current directory.
+	"""
+	import os
+	import csv
+	from fmri.nii import drop_vol
+
+
+	# Get the subject names from subfile
+	fs = open(subfile,'r')
+	subnames = csv.reader(fs).next()
+	fs.close()
+
+	# Read in funcfile 
+	ff = open(funcfile,'r')
+	funcnames = csv.reader(ff).next()
+	ff.close()
+
+	# rememer the pwd
+	oldpwd = os.getcwd()
+	
+	# then get to droppin' each
+	for s in subnames:
+		os.chdir(s)
+		[drop_vol(6,f+'.nii',True) for f in funcnames]
+		os.chdir(oldpwd)
+			## reset path for next
 
 
 def make_batch(subfile='sub.csv',funcfile='func.csv'):

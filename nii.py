@@ -35,7 +35,7 @@ def drop_vol(n=6,nii='',backup=True):
 	""" 
 	Drop <n> vol from the nifti file, <nii>. 
 
-	If True <backup> the orginal nii as org<nii>.
+	If True, <backup> the orginal nii as org<nii>.
 	"""
 
 	# Load nii, get its data 
