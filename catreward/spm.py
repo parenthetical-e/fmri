@@ -101,7 +101,7 @@ def drop6(subfile='sub.csv',funcfile='func.csv'):
 			## reset path for next
 
 
-def make_batch(subfile='sub.csv',funcfile='func.csv'):
+def make_batch(path='',subfile='sub.csv',funcfile='func.csv'):
 	"""
 	Uses <subfile> (a 1d csv file) and <funcfile> (also 1d) to return 
 	three parallizable lists of batches.
@@ -135,9 +135,9 @@ def make_batch(subfile='sub.csv',funcfile='func.csv'):
 		spath = os.path.abspath(s)
 		# Make a tuple like:
 		# ('spm_function_name','arg1','arg2', ...)
-		batch1.append(('cr_ana',s))
-		batch2.append(('cr_realign',s))
-		[batch3.append(('cr_func',s,f)) for f in funcnames]
+		batch1.append(('cr_ana',spath))
+		batch2.append(('cr_realign',spath))
+		[batch3.append(('cr_func',spath,f)) for f in funcnames]
 			
 	return batch1,batch2,batch3
 

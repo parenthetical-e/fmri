@@ -69,15 +69,30 @@ Copied fresh data for both 101M80351917 and 105M80350861.
 	> pavlov,taskA,taskB,coaster_localizer
 	
 	from fmri.catreward import spm
-	
+
 	# Go!
 	spm.drop6(subfile='sub.csv',funcfile='func.csv')
 
 	# Make the 3 batches (cr_ana, cr_realign and cr_func), 
 	# run each in turn.
-	b1,b2,b2 = spm.make_batch()
-	[spm.run(args) for args in b1]
-	[spm.run(args) for args in b2]
-	[spm.run(args) for args in b3]
+	b1,b2,b3 = spm.make_batch()
+	b1_out = [spm.run(args) for args in b1]
+	b2_out = [spm.run(args) for args in b2]
+	b3_out = [spm.run(args) for args in b3]
 		## b1,b2 could have been run in parallel
 		## b3 needs b1,2
+
+## Testing iPython parallelization
+
+Copied fresh data for both 101M80351917 and 105M80350861 (drop6 was already run).
+
+	cd ~/Lab/catreward/fmri/data/
+
+	from IPython.parallel import Client
+	rc = Client(); view = rc[:]
+
+	b1,b2,b3 = spm.make_batch()
+	res_b1 = view.map_async(spm.run,b1)
+	res_b2 = view.map_async(spm.run,b2)
+	res_b3 = view.map_async(spm.run,b3)
+
