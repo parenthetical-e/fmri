@@ -133,7 +133,7 @@ def make_batch(path='',subfile='sub.csv',funcfile='func.csv'):
 		## cr_func (require batch1 data)
 	for s in subnames:
 		spath = os.path.abspath(s)
-		# Make a tuple like:
+		# Append a tuple like:
 		# ('spm_function_name','arg1','arg2', ...)
 		batch1.append(('cr_ana',spath))
 		batch2.append(('cr_realign',spath))

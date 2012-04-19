@@ -27,7 +27,7 @@ A set of scripts to preprocess and analyze fMRI data for the catreward project.
 final anatomical name = wmana.nii 
 final functional name = swar*.nii
 
-# The Plan, Implemented -- In Functions, A Test For a Single S.
+## The Plan, Implemented -- In Functions, A Test For a Single S.
 
 Transfered a fresh copy of 101M80351917/ then ran (in iPython)
 
@@ -95,4 +95,9 @@ Copied fresh data for both 101M80351917 and 105M80350861 (drop6 was already run)
 	res_b1 = view.map_async(spm.run,b1)
 	res_b2 = view.map_async(spm.run,b2)
 	res_b3 = view.map_async(spm.run,b3)
+
+Though when using many engines (on EC2) it would make more sense to bundle b1 and b2, i.e:
+
+	 b1.extend(b2)
+
 
