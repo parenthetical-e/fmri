@@ -99,5 +99,3 @@ Copied fresh data for both 101M80351917 and 105M80350861 (drop6 was already run)
 Though when using many engines (on EC2) it would make more sense to bundle b1 and b2, i.e:
 
 	 b1.extend(b2)
-
-

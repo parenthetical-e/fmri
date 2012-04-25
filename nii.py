@@ -21,14 +21,20 @@ def _load(nii=''):
 	return nf1
 
 
-def basics(nii=''):
-	""" Return basic information about <nii>, a nifti file. """
-
-	nf1 = load(nii)
+def info(nii='',):
+	""" Return file info about <nii>, a nifti file. """
 
 	info = {}
-	info[nii] = {'shape':nf1.shape, 'dtype':nf1.get_data_dtype()} 
-	return info
+	try:
+		nf1 = nb.load(nii)
+		## what info?
+	except nb.spatialimages.ImageFileError, e:
+		print('Could not read {0}. {1}'.format(nii,e))
+
+	shape = nf1.shape
+	# ... size, affline, ?
+
+	pass
 
 
 def drop_vol(n=6,nii='',backup=True):
@@ -60,19 +66,30 @@ def drop_vol(n=6,nii='',backup=True):
 	nb.save(nii_dropped,nii)
 
 
-def loop(dir='.'):
+def aggregate_info(dir='.',write=True):
 	""" 
-	Recursively loop over <dir>, returning and printing basic info for
-	each .nii encountered.
-	"""
-	import pprint
-	
-	rootnode = os.path.abspath(dir)
-	loopinfo = {}
-	for root, subFolders, files in os.walk(rootnode,followlinks=True):
-		[loopinfo.update(basics(os.path.join(root,f))) for f in files]
+	Recursively loop over <dir>, returning shape info for each
+	.nii encountered.  Group that info by nii fies name
 
-	pprint.pprint(sorted(loopinfo.items()))
+	If <write> is True, the data is written to a set of csv files 
+	named <nii>_info.csv.
+	"""
+	import csv
 	
-	return loopinfo
+	# rootnode = os.path.abspath(dir)
+	# loopinfo = {}
+	# for root, subFolders, files in os.walk(rootnode,followlinks=True):
+	# 	[loopinfo.update((f,shape(os.path.join(root,f)))) for f in files]
+
+	# if write:
+	# 	f = open('nii_info.csv','w')
+	# 	w = csv.writer(f)
+	# 	niifiles = sorted(loopinfo.keys())
+	# 	for nii in niifiles:
+	# 		w.writerow(niifiles[nii].items())
+			
+	# 	f.flush()
+	# 	f.close()
+
+	# return loopinfo
 
