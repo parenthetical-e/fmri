@@ -1,5 +1,7 @@
 function [names onsets durations] = cr_dm_localizer_wl(filename),
-% Return names,onset,durations (cell arrays) for the localizer data in filename
+% Return names,onset,durations (cell arrays) for win/lose data in filename.
+%
+% Data is automatically saved to nod_wl_<filename>.mat
 
 	names = {'base','win','lose'};
 
