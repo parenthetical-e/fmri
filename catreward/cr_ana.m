@@ -1,10 +1,8 @@
 function cr_ana(dir_path),
 % Segment ana.nii in <dir_path>.
 %
-% This code was modified from:
-% This batch script analyses the Face fMRI dataset available from the SPM site:
-% http://www.fil.ion.ucl.ac.uk/spm/data/face_rep/face_rep_SPM5.html
-% as described in the manual Chapter 29.
+% cr_ana(dir_path),
+%
 
 	% Get SPM up...
 	spm('Defaults','fMRI');

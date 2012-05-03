@@ -1,11 +1,8 @@
 function cr_func(dir_path,func_name),
 % Preprocess <func_name> in <dir_path>, using ana.nii to coregister.
 %
-% This code was modified from:
-% This batch script analyses the Face fMRI dataset available from the SPM site:
-% http://www.fil.ion.ucl.ac.uk/spm/data/face_rep/face_rep_SPM5.html
-% as described in the manual Chapter 29.
-
+% cr_func(dir_path,func_name)
+% 
 	% copy and rename meanfunc.nii as needed....
 	mean_f_name = ['mean' func_name '.nii']
 	copyfile(fullfile(dir_path,'meanfunc.nii'), ...

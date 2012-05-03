@@ -1,5 +1,7 @@
 function [onsets durations] = cr_dm_gen(trials),
 %  <trials>, a 1d array trial event, get mapped to onsets and durations in TR time.
+%
+% [onsets durations] = cr_dm_gen(trials)
 
 	trial_duration = 3;
 	jitter_duration = 2;

@@ -1,11 +1,8 @@
 function cr_realign(dir_path),
 % Realign *all* catreward functional data in <dir_path>.
 %
-% This code was modified from:
-% This batch script analyses the Face fMRI dataset available from the SPM site:
-% http://www.fil.ion.ucl.ac.uk/spm/data/face_rep/face_rep_SPM5.html
-% as described in the manual Chapter 29.
-
+% cr_realign(dir_path)
+%
 
 	% SPM go!
 	spm('Defaults','fMRI');
