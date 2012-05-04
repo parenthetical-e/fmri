@@ -117,6 +117,8 @@ Local data was then coppied up to an EBS volume (vol-a4ff85ce) for backup.  It t
 
 After automoated processing the aligment and registration for each suject was examined by hand using the '' feature of SPM.  All appeared acceptable.  Likewise the swar* verions of the anatomical sets were visually examined (using the, superior to SPM, FLSview.app).  Again, everything appeared ok.
 
+Code used for preprocessing was tagged as "preprocessing" (Commit: c39dfe6e0f30b0c902573e2434e6d55e3650911a)
+
 # Analysis in SPM (1)
 
 The primary goal was to use the pavlov and coaster_localizer scans to define frontal, strial, and brainstem ROIs for model-based analysis of taskA and taskB data (extracting average timecourses for each subject for each individual ROI).
@@ -144,13 +146,30 @@ Predicted lsength of the coreg file
 
 ## pre-run order
 
-Ran (by hand) for 101:118, excluding 107, 110 
+Ran (by hand) for 101:118, excluding 107, 110.  (tagged as "c1ana", Commit: 5a5649583bf24807cc23fcd026142de9b7ffe99e)
 	
 	cr_c1ana(cr_subdir(<num>))
 
 Which puts the c1ana.nii file for each subject into MNI space.  c1ana is the white matter segments resulting from cr_ana().
 
-Then ran
+Then created and ran
+
+	function cr_dm_batch(),
+		% A batch file crating dms for all Ss.
+    
+	    sub_codes = [101:106 108:109 111:118]
+	    for ii=1:numel(sub_codes),
+	        num = sub_codes(ii)
+
+	        cr_dm_localizer_wl(num,'pavlov')
+	        cr_dm_localizer_wl(num,'coaster_localizer')
+	        
+	        cr_dm_task_wl(num,'A')
+	        cr_dm_task_wl(num,'B')
+	        
+	        cr_coreg_split(num)
+	    end
+	end
 
 	cr_dm_localizer_wl(num,name)
 	cr_dm_task_wl(num,task)
