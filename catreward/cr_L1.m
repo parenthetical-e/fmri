@@ -21,6 +21,7 @@ function cr_L1(fname,num,cond_code,func_names,cond_names,event),
 		nod{ii} = load(fpath);
 	end
 
+	old_path = pwd;
 	data_path = cr_subdir(num);
 	data_path = fullfile(pwd,data_path)
 
@@ -39,7 +40,7 @@ function cr_L1(fname,num,cond_code,func_names,cond_names,event),
 	jobs{1}.util{1}.cdir.directory = cellstr(data_path);
 		%% set wd	
 
-	 jobs{1}.util{1}.md.basedir = cellstr(data_path);
+	jobs{1}.util{1}.md.basedir = cellstr(data_path);
 	% jobs{1}.util{1}.md.name = fname;
 		%% Output lives here
 
@@ -50,6 +51,10 @@ function cr_L1(fname,num,cond_code,func_names,cond_names,event),
 	jobs{2}.stats{1}.fmri_spec.timing.fmri_t = nslice;
 	jobs{2}.stats{1}.fmri_spec.timing.fmri_t0 = nslice/2;
 	
+	% Apply the white matter mask
+	jobs{2}.stats{1}.fmri_spec.mask = cellstr(...
+		fullfile(data_path,'wc1ana.nii'));
+
 	% loop over func_names, setting model data
 	% for each.
 	for ii=1:numel(func_names),
@@ -88,34 +93,12 @@ function cr_L1(fname,num,cond_code,func_names,cond_names,event),
 		%% the [1 1] adds time and 
 		%% dispersion to the canonical HRF.
 
-	% % MODEL ESTIMATION
+	% MODEL ESTIMATION
 	jobs{2}.stats{2}.fmri_est.spmmat = cellstr(fullfile(data_path,fname,'SPM.mat'));
 
-	% % INFERENCE
-	% jobs{2}.stats{3}.results.spmmat = cellstr(fullfile(data_path,fname,'SPM.mat'));
-	% jobs{2}.stats{3}.results.conspec(1).contrasts = Inf;
-	% jobs{2}.stats{3}.results.conspec(1).threshdesc = 'FWE';
+	jobs{3}.util{1}.cdir.directory = cellstr(old_path);
+		%% reset wd	
 
-	% jobs{2}.stats{4}.results.spmmat = cellstr(fullfile(data_path,fname,'SPM.mat'));
-	% jobs{2}.stats{4}.results.conspec(1).titlestr = 'main effects';
-	% jobs{2}.stats{4}.results.conspec(1).contrasts = 3;
-	% jobs{2}.stats{4}.results.conspec(1).threshdesc = 'none';
-	% jobs{2}.stats{4}.results.conspec(1).thresh = 0.001;
-	% jobs{2}.stats{4}.results.conspec(1).extent = 0;
-	% jobs{2}.stats{4}.results.conspec(1).mask.contrasts = 5;
-	% jobs{2}.stats{4}.results.conspec(1).mask.thresh = 0.001;
-	% jobs{2}.stats{4}.results.conspec(1).mask.mtype = 0;
-
-	% jobs{2}.stats{5}.con.spmmat = cellstr(fullfile(data_path,fname,'SPM.mat'));
-	% jobs{2}.stats{5}.con.consess{1}.fcon.name = 'Movement-related effects';
-	% fcont = [zeros(6,3*4) eye(6)]; 
-	% for i=1:size(fcont,1)
-	% 	jobs{2}.stats{5}.con.consess{1}.fcon.convec{1,i} = fcont(i,:);
-	% end
-	% jobs{2}.stats{6}.results.spmmat = cellstr(fullfile(data_path,fname,'SPM.mat'));
-	% jobs{2}.stats{6}.results.conspec(1).contrasts = 17;
-	% jobs{2}.stats{6}.results.conspec(1).threshdesc = 'FWE';
-	
 	% RUN
 	spm_jobman('run',jobs);
 

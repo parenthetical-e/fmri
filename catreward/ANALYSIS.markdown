@@ -119,7 +119,56 @@ After automoated processing the aligment and registration for each suject was ex
 
 # Analysis in SPM (1)
 
-The primary goal was to use the pavlov and coaster_localizer scans to define frontal, striatal, and brainstem ROIs for model-based analysis of taskA and taskB data (extracting average timecourses for each subject for each individual ROI).
+The primary goal was to use the pavlov and coaster_localizer scans to define frontal, strial, and brainstem ROIs for model-based analysis of taskA and taskB data (extracting average timecourses for each subject for each individual ROI).
+
+## Functional number of vols (from swar*):
+
+101 pavlov 229
+102 pavlov 231
+103- pavlov 241
+
+101 coaster_localizer 229
+102 coaster_localizer 231
+103- coaster_localizer 241
+
+101 taskA 374
+102- taskA 384
+
+101 taskB 378
+102- taskB 388
+
+Predicted lsength of the coreg file
+101 rp_pavlov.txt 1210 (checks)
+102 rp_pavlov.txt 1234 (checks)
+103- rp_pavlov.txt 1254 (checks)
+
+## pre-run order
+
+Ran (by hand) for 101:118, excluding 107, 110 
+	
+	cr_c1ana(cr_subdir(<num>))
+
+Which puts the c1ana.nii file for each subject into MNI space.  c1ana is the white matter segments resulting from cr_ana().
+
+Then ran
+
+	cr_dm_localizer_wl(num,name)
+	cr_dm_task_wl(num,task)
+	cr_coreg_split(num)
+
+Then finally
+
+	cr_L1(num,cond_code,func_names,cond_names,event)
+
+Or fully specified for 101
+
+	cr_L1('spm_task',101,'wl',{'taskA','taskB'},{'base', 'win', 'lose'},1)
+	cr_L1('spm_local',101,'wl',{'pavlov','coaster_localizer'},{'base', 'win', 'lose'},1)
+
+	cr_L1_contrast_wl(101,'spm_task')
+	cr_L1_contrast_wl(101,'spm_local')
+
+Did the development on 101, then pulled a copy of 102 and 108 for confirmation.  
 
 
 
