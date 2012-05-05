@@ -1,5 +1,5 @@
 function cr_dm_batch(),
-% A batch file crating dms for all Ss.
+    % A batch function for creating DM nod_* files for all Ss.
     
     sub_codes = [101:106 108:109 111:118]
     for ii=1:numel(sub_codes),

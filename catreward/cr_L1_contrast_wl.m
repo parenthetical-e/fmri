@@ -66,7 +66,7 @@ function cr_L1_contrast_wl(num,fname),
     jobs{2}.stats{1}.con.consess{12}.tcon.name = 'g-l_2';
     jobs{2}.stats{1}.con.consess{12}.tcon.convec = [0 0 0 0 0 0 0 0 0 0 1 -1];
     jobs{2}.stats{1}.con.consess{12}.tcon.sessrep = 'none';
-
+    jobs{2}.stats{1}.con.delete = 1;
 
     jobs{2}.stats{2}.results.spmmat = cellstr(...
         fullfile(data_path,fname,'SPM.mat'));

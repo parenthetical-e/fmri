@@ -152,10 +152,10 @@ Ran (by hand) for 101:118, excluding 107, 110.  (tagged as "c1ana", Commit: 5a56
 
 Which puts the c1ana.nii file for each subject into MNI space.  c1ana is the white matter segments resulting from cr_ana().
 
-Then created and ran
+Then created and ran (Commit: d9208ad9565dd32d58f6d7772ebd9c124df92d01, tag: "dm"):
 
 	function cr_dm_batch(),
-		% A batch file crating dms for all Ss.
+		% A batch function for creating DM nod_* files for all Ss.
     
 	    sub_codes = [101:106 108:109 111:118]
 	    for ii=1:numel(sub_codes),
@@ -171,15 +171,13 @@ Then created and ran
 	    end
 	end
 
-	cr_dm_localizer_wl(num,name)
-	cr_dm_task_wl(num,task)
-	cr_coreg_split(num)
 
-Then finally
+Then finally ran the stats...
 
 	cr_L1(num,cond_code,func_names,cond_names,event)
 
 Or fully specified for 101
+
 
 	cr_L1('spm_task',101,'wl',{'taskA','taskB'},{'base', 'win', 'lose'},1)
 	cr_L1('spm_local',101,'wl',{'pavlov','coaster_localizer'},{'base', 'win', 'lose'},1)
@@ -187,7 +185,11 @@ Or fully specified for 101
 	cr_L1_contrast_wl(101,'spm_task')
 	cr_L1_contrast_wl(101,'spm_local')
 
-Did the development on 101, then pulled a copy of 102 and 108 for confirmation.  
+Did the development on 101, then pulled a copy of 102 and 108 for confirmation.  Then created the below, and ran it over all Ss (~ 3 hrs).
+
+	cr_L1_batch()
+
+
 
 
 
