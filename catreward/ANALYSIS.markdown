@@ -172,6 +172,8 @@ Then created and ran (Commit: d9208ad9565dd32d58f6d7772ebd9c124df92d01, tag: "dm
 	end
 
 
+## Stats (1)
+
 Then finally ran the stats...
 
 	cr_L1(num,cond_code,func_names,cond_names,event)
@@ -202,9 +204,40 @@ Did the development on 101, then pulled a copy of 102 and 106 for confirmation. 
 	end
 
 
-TODO DISCUSS THESE
 
-Then reran with HRF derivatives on.
+## RFX Results (1)
+
+Using the batch editor created several RFX runs, the .m file for each is in the folders where the results for each into was saved into:
+
+	L2_spm_local_gl_pavlov
+	L2_spm_local_gXl
+	L2_spm_local_gXl_pavlov
+	L2_spm_task_g_l_pairt
+	L2_spm_task_g-1
+	L2_spm_task_gl
+	L2_spm_task_gXl
+	L2_spm_task_gXl_A
+	L2_spm_task_gXl_B
+
+
+### Localizers
+
+
+### Task
+
+ACC, Cuneus, Insula, OFC, and Thalamus @ p < 0.06 (FWE, N = 16) looking at the interaction between gains and losses. Gains + losses (main) are similar, as are gains only. Loses - gains has no notable significant effects (a tiny bit in insula).
+
+Taking the threshold to p < .18 (FWE) does not effect the above, *and* there is still no striatal activity. p < 0.001 (uncorr) does reveal Head activity; Too weak.
+
+Very interesting all around. It looks a bit like a inter-temporal choice. I can totally do something with these patterns, but it does make me question striatal model fitting… however a prior evidence, so….
+
+My plan is to fit the three models to all of the above as well as head, ven str, and putamen. Fits will be to the average timecourse for the functional ROIs of each (derived from the 2 localizers combined, anatomically limited and assigned).
+
+Also, want to rerun using HRF derivatives...
+
+## Stats (2)
+
+Then reran with HRF derivatives on (Commit: 9eecf897ad4d9b460946f647a774d515853cdb11, Tagged as "stats_deriv".
 
 	cr_L1_batch()
 
