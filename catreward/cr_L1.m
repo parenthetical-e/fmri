@@ -89,7 +89,7 @@ function cr_L1(fname,num,cond_code,func_names,cond_names,event),
 	% jobs{2}.stats{1}.fmri_spec.fact.levels = num_levels
 	
 	% HRF choice and params
-	% jobs{2}.stats{1}.fmri_spec.bases.hrf.derivs = [1 1];
+	jobs{2}.stats{1}.fmri_spec.bases.hrf.derivs = [1 1];
 		%% the [1 1] adds time and 
 		%% dispersion to the canonical HRF.
 

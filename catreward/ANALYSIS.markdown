@@ -185,10 +185,38 @@ Or fully specified for 101
 	cr_L1_contrast_wl(101,'spm_task')
 	cr_L1_contrast_wl(101,'spm_local')
 
-Did the development on 101, then pulled a copy of 102 and 108 for confirmation.  Then created the below, and ran it over all Ss (~ 3 hrs).
+Did the development on 101, then pulled a copy of 102 and 106 for confirmation.  Then created the below, and ran it over all Ss (~ 3 hrs; Commit: 7b9b5182829f71ed28a48763762cbb99ad376613, tag "stats").
+
+	function cr_L1_batch(),
+		% A batch function for running L1 scripts for all Ss
+    
+	    sub_codes = [101:106 108:109 111:118]
+	    for ii=1:numel(sub_codes),
+	        num = sub_codes(ii)
+	        cr_L1('spm_task',num,'wl',{'taskA','taskB'},{'base','win','lose'},1)
+	        cr_L1('spm_local',num,'wl',{'pavlov','coaster_localizer'},{'base','win','lose'},1)
+
+	        cr_L1_contrast_wl(num,'spm_task')
+	        cr_L1_contrast_wl(num,'spm_local')
+	    end
+	end
+
+
+TODO DISCUSS THESE
+
+Then reran with HRF derivatives on.
 
 	cr_L1_batch()
 
+	# LINE 92 was uncommented....
+	% HRF choice and params
+	jobs{2}.stats{1}.fmri_spec.bases.hrf.derivs = [1 1];
+		%% the [1 1] adds time and 
+		%% dispersion to the canonical HRF.
+
+saving the results to 
+	
+	/spm_local_hrfd and /spm_task_hrfd
 
 
 
