@@ -251,7 +251,33 @@ saving the results to
 	
 	/spm_local_hrfd and /spm_task_hrfd
 
+Then ran the stats for 
 
+	../spm_task_hrfd
 
+via another modification (Commit d2f60d11677663f17b56777172f98bfae21bce19, Tag: "task_hrfd") to 
 
+	cr_L1_batch()
+	
+now using 
+
+	cr_L1_contrast_wl_hrfd() 
+
+to setup the contrasts.
+
+## RFX Results (2), task_hrfd
+
+Adding had no significant effect on g, gl, and gXl analyses (task A abd B combined.  If anything, clusters were smaller.  Therefore carrying on without HRF derivatives.
+
+## Stats (3)
+
+For stats (1) and (2) the underlying neuronal activity was modelled as single stick at each trials begining (SPM8's default).  However given trials lasted 2-3 TRs, this may not be the best model. (3) explores stick models that span entire trials, i.e. for a 3 TR trial [1 0 0] would become [1 1 1]...
+
+Again modified 
+
+	cr_L1_batch()
+
+saving the results in
+
+	/spm_task_ldur and /spm_local_ldur
 
