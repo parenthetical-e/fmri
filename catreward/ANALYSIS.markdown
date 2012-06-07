@@ -273,7 +273,7 @@ Adding had no significant effect on g, gl, and gXl analyses (task A abd B combin
 
 For stats (1) and (2) the underlying neuronal activity was modelled as single stick at each trials begining (SPM8's default).  However given trials lasted 2-3 TRs, this may not be the best model. (3) explores stick models that span entire trials, i.e. for a 3 TR trial [1 0 0] would become [1 1 1]...
 
-Again modified 
+Again modified (Commit: f4d82ac022e80d8e1a4206ebae2984200c771cf1, Tag: "ldur")
 
 	cr_L1_batch()
 
