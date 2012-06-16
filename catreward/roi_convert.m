@@ -1,5 +1,6 @@
 % Run inside the directory containing the *_roi.mat
 % files you want to convert to .nii files.
+files = dir('*_roi.mat')
 for ii=1:size(files,1), 
     ff = files(ii).name; 
     disp(ff); 
