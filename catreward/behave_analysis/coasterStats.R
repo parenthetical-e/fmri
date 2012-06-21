@@ -23,7 +23,7 @@ coasterStats <- function(num){
     # Filter the data by gains or losses
     # also remove any jitter trials (= 0)
     gMask <- (dAB[["gl"]] == 1) & (dAB[["cat"]] > 0)
-    lMask <- dAB[["gl"]] == -1 & (dAB[["cat"]] > 0)
+    lMask <- (dAB[["gl"]] == -1) & (dAB[["cat"]] > 0)
     
     # Calc the stats, and combined them.
     gStats <- c(mean(dAB[["width"]][gMask]), 
