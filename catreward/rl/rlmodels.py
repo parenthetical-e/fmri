@@ -172,7 +172,7 @@ def fit_all(res=0.05, write=False):
 
     fitted = []
     reward_names = ['acc', 'gl']
-    similarities = [None, 'exp', 'gauss']
+    similarities = [None, 'exp', 'gauss', 'rdis']
     for num in subjects:
         for name in reward_names:
             for sim in similarities:
@@ -200,7 +200,7 @@ def run_all(write=True):
             115, 116, 117, 118]
 
     reward_names = ['acc', 'gl']
-    similarities = [None, 'exp', 'gauss']
+    similarities = [None, 'exp', 'gauss', 'rdis']
 
     rl_data = []
     for num in subjects:

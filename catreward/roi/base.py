@@ -69,10 +69,19 @@ class Catreward(Roi):
         self.create_dm_param(names=data_to_use)
         self.fit(norm='zscore')
 
-
     # --
     # Simlarity metrics
     def model_042(self):
+        """  Outcome similarity (euclidian). """
+
+        data_to_use = ['rdis']
+        self.data['meta']['dm'] = ["box",] + data_to_use
+
+        self.create_dm_param(names=data_to_use)
+        self.fit(norm='zscore')
+
+
+    def model_043(self):
         """ Outcome similarity (exponential). """
 
         data_to_use = ['exp']
@@ -82,8 +91,8 @@ class Catreward(Roi):
         self.fit(norm='zscore')
 
 
-    def model_043(self):
-        """  Outcome similarity (gaussian). """
+    def model_044(self):
+        """ Outcome similarity (gaussian). """
 
         data_to_use = ['gauss']
         self.data['meta']['dm'] = ["box",] + data_to_use
@@ -92,7 +101,7 @@ class Catreward(Roi):
         self.fit(norm='zscore')
 
 
-    def model_044(self):
+    def model_045(self):
         """ Contra-outcome similarity (exponential). """
 
         data_to_use = ['exp_opp']
@@ -102,7 +111,7 @@ class Catreward(Roi):
         self.fit(norm='zscore')
 
 
-    def model_045(self):
+    def model_046(self):
         """ Contra-outcome similarity (gaussian). """
 
         data_to_use = ['gauss_opp']
@@ -112,7 +121,7 @@ class Catreward(Roi):
         self.fit(norm='zscore')
 
 
-    def model_046(self):
+    def model_047(self):
         """ Outcome and contra-outcome similarities (exponential),
         as separate regressors. """
 
@@ -123,7 +132,7 @@ class Catreward(Roi):
         self.fit(norm='zscore')
 
 
-    def model_046(self):
+    def model_048(self):
         """ Outcome and contra-outcome similarities (gaussian),
         as separate regressors. """
 
@@ -166,6 +175,16 @@ class Catreward(Roi):
         self.fit(norm='zscore') 
 
 
+    def model_053(self):
+        """ Gains and losses, diminished by (euclidian) similarity. """
+
+        data_to_use = ['gl_rdis']
+        self.data['meta']['dm'] = ["box",] + data_to_use
+
+        self.create_dm_param(names=data_to_use)
+        self.fit(norm='zscore') 
+
+
     # --
     # Accuracy
     def model_060(self):
@@ -198,6 +217,16 @@ class Catreward(Roi):
         self.fit(norm='zscore')
 
 
+    def model_063(self):
+        """ Behavioral accuracy, diminished by (euclidian) similarity. """
+
+        data_to_use = ['acc_rdis']
+        self.data['meta']['dm'] = ["box",] +  data_to_use
+
+        self.create_dm_param(names=data_to_use)
+        self.fit(norm='zscore')
+
+
     # --
     # RL - normal
     def model_070(self):
@@ -220,7 +249,7 @@ class Catreward(Roi):
         self.fit(norm='zscore')
 
 
-    def model_073(self):
+    def model_072(self):
         """ RPE - derived from gains and loses. """
 
         data_to_use = ['rpe_gl']
@@ -265,7 +294,7 @@ class Catreward(Roi):
         self.fit(norm='zscore')
 
     
-    def model_082(self):
+    def model_090(self):
         """ RPE - derived from accuracy diminished by (gaussian) 
         similarity. """          
 
@@ -276,7 +305,7 @@ class Catreward(Roi):
         self.fit(norm='zscore')
 
 
-    def model_083(self):
+    def model_091(self):
         """ Value - derived from accuracy diminished by (gaussian) 
         similarity. """
 
@@ -287,8 +316,30 @@ class Catreward(Roi):
         self.fit(norm='zscore')
 
 
+    def model_100(self):
+        """ RPE - derived from accuracy diminished by (euclidian) 
+        similarity. """          
+
+        data_to_use = ['rpe_acc_rdis']
+        self.data['meta']['dm'] = ["box",] + data_to_use
+
+        self.create_dm_param(names=data_to_use)
+        self.fit(norm='zscore')
+
+
+    def model_101(self):
+        """ Value - derived from accuracy diminished by (euclidian) 
+        similarity. """
+
+        data_to_use = ['value_acc_rdis']
+        self.data['meta']['dm'] = ["box",] + data_to_use
+
+        self.create_dm_param(names=data_to_use)
+        self.fit(norm='zscore')
+
+
     # Gains and losses
-    def model_084(self):
+    def model_110(self):
         """ RPE - derived from gains and losses diminished by (exponential) 
         similarity. """         
 
@@ -299,7 +350,7 @@ class Catreward(Roi):
         self.fit(norm='zscore')
 
 
-    def model_085(self):
+    def model_111(self):
         """ Value - derived from gains and losses diminished by (exponential) 
         similarity. """
 
@@ -310,7 +361,7 @@ class Catreward(Roi):
         self.fit(norm='zscore')
 
     
-    def model_086(self):
+    def model_120(self):
         """ RPE - derived from gains and losses diminished by (gaussian) 
         similarity. """         
 
@@ -321,11 +372,33 @@ class Catreward(Roi):
         self.fit(norm='zscore')
 
 
-    def model_087(self):
+    def model_121(self):
         """ Value - derived from gains and losses diminished by (gaussian) 
         similarity. """
 
         data_to_use = ['value_gl_gauss']
+        self.data['meta']['dm'] = ["box",] + data_to_use
+
+        self.create_dm_param(names=data_to_use)
+        self.fit(norm='zscore')
+
+
+    def model_130(self):
+        """ RPE - derived from gains and losses diminished by (euclidian) 
+        similarity. """         
+
+        data_to_use = ['rpe_gl_rdis']
+        self.data['meta']['dm'] = ["box",] + data_to_use
+
+        self.create_dm_param(names=data_to_use)
+        self.fit(norm='zscore')
+
+
+    def model_131(self):
+        """ Value - derived from gains and losses diminished by (euclidian) 
+        similarity. """
+
+        data_to_use = ['value_gl_rdis']
         self.data['meta']['dm'] = ["box",] + data_to_use
 
         self.create_dm_param(names=data_to_use)

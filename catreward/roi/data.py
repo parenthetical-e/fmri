@@ -177,6 +177,13 @@ def get_similarity_data(num):
             simil['exp_opp'].append(exp_g)
             simil['gauss_opp'].append(gauss_g)
 
+    # Reflect distance, so it can be compared to the 
+    # similarity metrics.
+    simil['rdis'] = np.zeros_like(simil['distance'])
+    mask = np.array(simil['distance']) != 0
+    simil['rdis'][mask] = 1 - np.array(simil['distance'])[mask]
+    simil['rdis'] = simil['rdis'].tolist()
+
     return simil
 
 
