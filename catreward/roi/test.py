@@ -101,3 +101,39 @@ def data(num):
         roi_results.append(roiglm.run(name))
 
     return roi_results
+
+
+def meandata(num):
+    """ Run a single subjects data, drawing the BOLD data
+    from the /bold dir text files. """
+
+    sdir = subdir(num)
+    roi_names = [
+            "wartaskAB_Right Accumbens_str2_bold.txt",
+            "wartaskAB_Right Accumbens_bold.txt",
+            "wartaskAB_Right Caudate_bold.txt"]
+ 
+    # --
+    # Get that Ss data and trial information.
+    sdata = get_behave_data(num)
+    sdata.update(get_similarity_data(num))
+    sdata.update(get_rl_data(num))
+    
+    trials = get_trials_combined()
+    durations = get_durations()
+
+    # --
+    # Go!
+    roi_results = []
+    for name in roi_names:
+        print(name)
+        spath = os.path.join(sdir, 'bold', name)
+    
+        # Init this roi's models
+        roiglm = fmri.catreward.roi.base.CatMean(
+                1.5, spath, trials, durations, sdata)
+
+        # Get, reformat (extract), and store the results.
+        roi_results.append(roiglm.run(name))
+
+    return roi_results

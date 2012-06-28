@@ -1,5 +1,5 @@
 """ An (master) roi experiment for the catreward project. """
-from roi.base import Roi
+from roi.base import Roi, Mean
 
 
 class Catreward(Roi):
@@ -403,5 +403,21 @@ class Catreward(Roi):
 
         self.create_dm_param(names=data_to_use)
         self.fit(norm='zscore')
+
+
+class CatMean(Mean, Catreward):
+    """ A Roi analysis class, customized for the catreward project. 
+    
+    Unlike Catreward, this reads in the average bold data from a 
+    text file. """
+
+    def __init__(self, TR, roi_name, trials, durations, data):
+        Catreward.__init__(self, TR, roi_name, trials, durations, data)
+        Mean.__init__(self, TR, roi_name, trials, durations, data)
+    
+        self.data['meta']['bold'] = self.roi_name
+
+        self.create_bold(preprocess=True)
+        self.create_hrf(function_name='double_gamma')
 
 

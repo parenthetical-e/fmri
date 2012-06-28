@@ -90,7 +90,7 @@ def run(num):
     return results
 
 
-def run_all(write=True):
+def run_all(code, write=True):
     """ Run sub() for all subjects.  If <write> each as a seperate hdf5 file.
 
     Note: Must be run from the parent folder of all the fMRI datasets."""
@@ -106,7 +106,8 @@ def run_all(write=True):
 
         if write:
             print('Writing...')
-            roi.io.write_hdf(results, str(sub) + '_roi_result.hdf5')
+            roi.io.write_hdf(
+                    results, str(code) + '_' + str(sub) + '_roi_result.hdf5')
         
     return all_results
 

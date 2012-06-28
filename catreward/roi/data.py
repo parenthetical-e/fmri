@@ -25,7 +25,7 @@ def get_trials():
 
 def get_durations():
     """ Get the trial durations for  taskA and B (combined) in TRs 
-    (i.e. 1.5 second increments)."""
+    (i.e. 1.5 second increments). """
 
     trials = get_trials()
     durations = []
@@ -176,14 +176,26 @@ def get_similarity_data(num):
             simil['distance_opp'].append(dis_g)
             simil['exp_opp'].append(exp_g)
             simil['gauss_opp'].append(gauss_g)
-
+    
     # Reflect distance, so it can be compared to the 
     # similarity metrics.
     simil['rdis'] = np.zeros_like(simil['distance'])
     mask = np.array(simil['distance']) != 0
     simil['rdis'][mask] = 1 - np.array(simil['distance'])[mask]
     simil['rdis'] = simil['rdis'].tolist()
+    
+    # Renormalize all simil measures so that
+    # min/max rest at 0/1; that is we assume
+    # that neural signal employ dynamic gain
+    # adjustment.
+    for key, val in simil.items():
+        arr = np.array(val)
+        mask0 = arr > 0.0000
+        maskarr = arr[mask0]
+        minarr = maskarr - maskarr.min()
+        norm = minarr / minarr.max()
+        arr[mask0] = norm
+        simil[key] = arr.tolist()
 
     return simil
-
 
