@@ -118,8 +118,8 @@ def meandata(num):
     sdata = get_behave_data(num)
     sdata.update(get_similarity_data(num))
     sdata.update(get_rl_data(num))
-    
-    trials = get_trials_combined()
+ 
+    trials = get_trials()
     durations = get_durations()
 
     # --
@@ -130,7 +130,7 @@ def meandata(num):
         spath = os.path.join(sdir, 'bold', name)
     
         # Init this roi's models
-        roiglm = fmri.catreward.roi.base.CatMean(
+        roiglm = fmri.catreward.roi.exps.base.CatMean(
                 1.5, spath, trials, durations, sdata)
 
         # Get, reformat (extract), and store the results.

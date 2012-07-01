@@ -1,18 +1,14 @@
-processModelScores <- function(path){
-    # Combined each Ss data into a single DF, 
-    # and then process them.
+importAllScores <- function(suffix){
+    # Using <suffix> to select the right data, combined each Ss 
+    # data into a single DF, and then process them.
 
     subjects <- c(101, 102, 103, 104, 105, 106, 108, 109, 111, 112, 113, 114, 
                   115, 116, 117, 118)
 
-    # Move to the given path
-    old_path <- getwd()
-    setwd(path)
-
     # Get the data
     allData <- NULL
     for(sub in subjects){
-        fname <- paste(sub, "_roi_model_scores.txt", sep="")
+        fname <- paste(sub, "_", suffix, ".txt", sep="")
         data <- read.table(fname, sep="\t", header=TRUE)
         allData <- rbind(allData, data)
     }
@@ -41,8 +37,5 @@ processModelScores <- function(path){
         newRoiNames[allData[["roi"]] == roi] <- newName
     }
     allData[["roi_names"]] <- as.factor(newRoiNames)
-
-    setwd(old_path)
-    
     allData
 }
