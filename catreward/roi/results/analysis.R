@@ -1,40 +1,33 @@
-analysis <- function(suffix, keep=NA){
+analysis <- function(suffix, norm){
     # A master script for catreward roi model analysis
     
-    source("~/Code/fmri/catreward/roi/results/importAllScores.R")
-    source("~/Code/fmri/catreward/roi/results/reclassifyScores.R")
-    source("~/Code/fmri/catreward/roi/results/reclassifyRois.R")
-    source("~/Code/fmri/catreward/roi/results/scoreStats.R")
-
-    scores <- importAllScores(suffix)
-    scores <- reclassifyRois(scores)
-    scores <- reclassifyScores(scores)
-
-    print(paste("Overall mean AIC / BIC was ",
-                mean(scores$aic), " / ",
-                mean(scores$bic),
-                sep=""))
+    source("~/Code/fmri/catreward/roi/results/import.all.scores.R")
+    source("~/Code/fmri/catreward/roi/results/reclassify.R")
+    source("~/Code/fmri/catreward/roi/results/score.stats.R")
+    source("~/Code/fmri/catreward/roi/results/normalize.R")
     
-    if(sum(is.na(keep)) == 0){
-        # Build a mask
-        mask <- rep(FALSE, nrow(scores))
-        for(name in keep){
-            mask <- mask | (scores$dm == name)
-        }
-
-        # use it to filter scores
-        scores <- scores[mask, ]
-
-        # and relevel too.
-        scores <- droplevels(scores)
+    # Read in process all the scores
+    scores <- import.all.scores(suffix)
+    if(norm == "model_00"){
+        scores <- norm.model_00(scores, 1:7)
+    } else if (norm == "mean"){
+        scores <- norm.mean(scores, 1:7)
     }
+    
+    # Create some useful meta-data
+    scores <- reclassify.rois(scores)
+    scores <- reclassify.scores(scores)
+    scores <- reclassify.as.bilateral(scores)
 
-    # Get stats for Ss
-    stats <- scoreStats(scores)
+    # Calc some basic stats
+    stats <- score.stats(scores)
 
-    # TOOD Do plots?
+    # and redo reclassify.
+    stats <- reclassify.rois(stats)
+    stats <- reclassify.scores(stats)
+    stats <- reclassify.as.bilateral(stats)
 
-    # Return
+    # And return both scores and their stats
     list(scores=scores, stats=stats)
 }
 
