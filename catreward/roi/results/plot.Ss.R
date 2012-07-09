@@ -48,6 +48,7 @@ s.boxplot.AIC.bilat <- function(score_data, plot_name){
         p <- p + geom_hline(aes(yintercept=-2), color="red", alpha=0.8)
         p <- p + geom_hline(aes(yintercept=-4), color="orange", alpha=0.8)
         p <- p + coord_flip()
+        p <- p + ylim(-40,10)
         p <- p + opts(title=paste(paste("s_boxplot_", 
                                         plot_name, 
                                         "_aic_", 
@@ -55,6 +56,36 @@ s.boxplot.AIC.bilat <- function(score_data, plot_name){
         p <- p + scale_colour_brewer(palette="Dark2")
         plot(p)
         ggsave(paste("s_boxplot_", plot_name, "_aic_", roi, ".pdf", sep=""))
+    }
+
+    # Get rid of all the open windows...
+    graphics.off()
+}
+
+
+s.boxplot.BIC.bilat <- function(score_data, plot_name){
+    # Given all the Ss bic data (from processscore_dataodelScore.R)
+    # make a nice plot for each ROI.
+    require(ggplot2)
+    source("~/Code/fmri/catreward/roi/results/filterdf.R")
+
+    # And plot!
+    for(roi in levels(score_data$bilat_class)){
+        pdf(height=5, width=7.5)  ## real big for all the data!
+        print(roi)
+        roi_data <- score_data[score_data$bilat_class == roi, ]
+        p <- ggplot(data=roi_data, aes(x=dm, y=bic, colour=score_class)) 
+        p <- p + geom_boxplot()
+        p <- p + stat_summary(fun.y = "mean", geom="point", shape=2)        
+        p <- p + geom_hline(aes(yintercept=0), color="black")
+        p <- p + coord_flip()
+        p <- p + opts(title=paste(paste("s_boxplot_", 
+                                        plot_name, 
+                                        "_bic_", 
+                                        roi,sep="")))
+        p <- p + scale_colour_brewer(palette="Dark2")
+        plot(p)
+        ggsave(paste("s_boxplot_", plot_name, "_bic_", roi, ".pdf", sep=""))
     }
 
     # Get rid of all the open windows...

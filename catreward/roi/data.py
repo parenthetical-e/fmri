@@ -7,6 +7,7 @@ import fmri
 import roi
 from similarity.category import prototype2d
 
+
 def get_trials():
     """ Return trials for taskA and B (combined) in trial-time 
     (equivilant to 3 TRs). """
@@ -198,6 +199,55 @@ def get_similarity_data(num):
         simil[key] = arr.tolist()
 
     return simil
+
+
+def get_cumrewards(num):
+    """ Return (in a dict) the cumulative means for all rewards for 
+    subject <num> """
+
+    def cummean(arr1d):
+        """ Returns a vector of cumulative means """
+
+        return np.cumsum(arr1d) / np.arange(1,len(arr1d)+1)
+
+    # Get needed <num> related behave data
+    num_data = get_behave_data(num)
+    num_data.update(get_similarity_data(num))
+    num_data.update(fmri.catreward.rl.data.get_rl_data(num))
+
+    # Hardcoded reward names
+    rew_names = ['acc', 'gl', 
+            'acc_exp', 'acc_gauss', 'acc_rdis',
+            'gl_exp', 'gl_gauss', 'gl_rdis']
+
+    cum_names = ['cummean_acc', 'cummean_gl', 
+            'cummean_acc_exp', 'cummean_acc_gauss', 'cummean_acc_rdis',
+            'cummean_gl_exp', 'cummean_gl_gauss', 'cummean_gl_rdis']
+
+    # Init cumrewards, fill each arr with 0s
+    cumrewards = {}
+    for cum, rew in zip(cum_names, rew_names):
+        cumrewards[cum] = np.repeat(0.0, len(num_data[rew]))
+
+    # Setup the stimindex
+    stimindex = num_data["stim"]
+    stimindex_arr = np.array(stimindex)
+    stim = set(stimindex)
+
+    # For each stim and rew_names, calc
+    # the cum mean and put it in
+    # cumrewards using an array mask
+    for s_i in list(stim):
+        if s_i == '0': continue
+
+        mask = s_i == stimindex_arr
+
+        for cum, rew in zip(cum_names, rew_names):
+            cumrewards[cum][mask] = cummean(np.asarray(num_data[rew])[mask])
+                ## Cast to np.array() just in case
+
+    return cumrewards
+
 
 def get_roi_names(kind='txt'):
     """ Return ROI names.  If <kind> is 'nii' return those names

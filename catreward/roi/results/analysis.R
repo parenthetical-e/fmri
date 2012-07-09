@@ -8,6 +8,12 @@ analysis <- function(suffix, norm){
     
     # Read in process all the scores
     scores <- import.all.scores(suffix)
+
+    # TODO GetF and F before we norm
+    # run a FFX T-test with them, for model, 
+    # across Ss
+
+    # Norm!
     if(norm == "model_00"){
         scores <- norm.model_00(scores, 1:7)
     } else if (norm == "mean"){

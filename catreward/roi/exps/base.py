@@ -58,7 +58,7 @@ class Catreward(Roi):
 
         self.create_dm_param(names=data_to_use, orth=True)
         self.fit(norm='zscore')
-
+    
     # --
     # Simlarity metrics
     def model_042(self):
@@ -389,6 +389,106 @@ class Catreward(Roi):
         similarity. """
 
         data_to_use = ['value_gl_rdis']
+        self.data['meta']['dm'] = ["box",] + data_to_use
+
+        self.create_dm_param(names=data_to_use, orth=True)
+        self.fit(norm='zscore')
+
+
+    def model_140(self):
+        """ Gabor angle parameter. """
+
+        data_to_use = ['angle']
+        self.data['meta']['dm'] = ["box",] + data_to_use
+
+        self.create_dm_param(names=data_to_use, orth=True)
+        self.fit(norm='zscore')
+
+
+    def model_141(self):
+        """ Gabor width parameter. """
+
+        data_to_use = ['width']
+        self.data['meta']['dm'] = ["box",] + data_to_use
+
+        self.create_dm_param(names=data_to_use, orth=True)
+        self.fit(norm='zscore')
+
+
+    def model_150(self):
+        """ Cumulative average reward - acc. """
+
+        data_to_use = ['cummean_acc']
+        self.data['meta']['dm'] = ["box",] + data_to_use
+
+        self.create_dm_param(names=data_to_use, orth=True)
+        self.fit(norm='zscore')
+
+
+    def model_151(self):
+        """ Cumulative average reward - acc_exp. """
+
+        data_to_use = ['cummean_acc_exp']
+        self.data['meta']['dm'] = ["box",] + data_to_use
+
+        self.create_dm_param(names=data_to_use, orth=True)
+        self.fit(norm='zscore')
+
+
+    def model_152(self):
+        """ Cumulative average reward - acc_gauss. """
+
+        data_to_use = ['cummean_acc_gauss']
+        self.data['meta']['dm'] = ["box",] + data_to_use
+
+        self.create_dm_param(names=data_to_use, orth=True)
+        self.fit(norm='zscore')
+
+
+    def model_153(self):
+        """ Cumulative average reward - acc_rdis. """
+
+        data_to_use = ['cummean_acc_rdis']
+        self.data['meta']['dm'] = ["box",] + data_to_use
+
+        self.create_dm_param(names=data_to_use, orth=True)
+        self.fit(norm='zscore')
+
+
+    def model_154(self):
+        """ Cumulative average reward - gl. """
+
+        data_to_use = ['cummean_gl']
+        self.data['meta']['dm'] = ["box",] + data_to_use
+
+        self.create_dm_param(names=data_to_use, orth=True)
+        self.fit(norm='zscore')
+
+
+    def model_155(self):
+        """ Cumulative average reward - gl_exp. """
+
+        data_to_use = ['cummean_gl_exp']
+        self.data['meta']['dm'] = ["box",] + data_to_use
+
+        self.create_dm_param(names=data_to_use, orth=True)
+        self.fit(norm='zscore')
+
+
+    def model_156(self):
+        """ Cumulative average reward - gl_gauss. """
+
+        data_to_use = ['cummean_gl_gauss']
+        self.data['meta']['dm'] = ["box",] + data_to_use
+
+        self.create_dm_param(names=data_to_use, orth=True)
+        self.fit(norm='zscore')
+
+    
+    def model_157(self):
+        """ Cumulative average reward - gl_rdis. """
+
+        data_to_use = ['cummean_gl_rdis']
         self.data['meta']['dm'] = ["box",] + data_to_use
 
         self.create_dm_param(names=data_to_use, orth=True)
@@ -1216,3 +1316,4 @@ class Subtime(Mean):
         self.create_dm_param(names=data_to_use, orth=True, drop=[0, 1, 1])
         self.fit(norm='zscore')
 
+    
