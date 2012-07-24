@@ -6,11 +6,11 @@ score.stats <- function(score_data){
     
     # Then stats, conditionalized on:
     cond_on <- list(dm=score_data$dm, roi_names=score_data$roi_names)
-    N = aggregate(score_data[,1:7], cond_on, length)
+    N = aggregate(score_data[,1:8], cond_on, length)
 
-    SD = aggregate(score_data[,1:7], cond_on, sd)
-    M = aggregate(score_data[,1:7], cond_on, mean)
-    SE <- SD[ ,3:9] / sqrt(N[ ,3:9])
+    SD = aggregate(score_data[,1:8], cond_on, sd)
+    M = aggregate(score_data[,1:8], cond_on, mean)
+    SE <- SD[ ,3:10] / sqrt(N[ ,3:10])
     SE <- cbind(SD[,1:2],SE)
 
     # Create levels for the type of stat

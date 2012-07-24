@@ -5,19 +5,23 @@ analysis <- function(suffix, norm){
     source("~/Code/fmri/catreward/roi/results/reclassify.R")
     source("~/Code/fmri/catreward/roi/results/score.stats.R")
     source("~/Code/fmri/catreward/roi/results/normalize.R")
+    source("~/Code/fmri/catreward/roi/results/m.Ss.ftest.R")
     
     # Read in process all the scores
     scores <- import.all.scores(suffix)
 
-    # TODO GetF and F before we norm
-    # run a FFX T-test with them, for model, 
-    # across Ss
+    # Was each model for each ROI significant by 
+    # Ss-average omnibus F-test?  (F data was average
+    # of each S taken from the pythonic regressions).
+    sig_results <- m.Ss.ftest(scores)
 
     # Norm!
     if(norm == "model_00"){
         scores <- norm.model_00(scores, 1:7)
-    } else if (norm == "mean"){
+    } else if(norm == "mean"){
         scores <- norm.mean(scores, 1:7)
+    } else if(norm == "min"){
+        scores <- norm.min.delta(scores, 1:7)
     }
     
     # Create some useful meta-data
@@ -32,6 +36,8 @@ analysis <- function(suffix, norm){
     stats <- reclassify.rois(stats)
     stats <- reclassify.scores(stats)
     stats <- reclassify.as.bilateral(stats)
+    stats$fvalue_raw <- sig_results$fvalue
+    stats$p_levels <- sig_results$p_levels
 
     # And return both scores and their stats
     list(scores=scores, stats=stats)

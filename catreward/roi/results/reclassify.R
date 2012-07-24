@@ -79,11 +79,15 @@ reclassify.scores <- function(score_data){
             gen_cat[ii] <- 'rpe'
         } else if('value' %in% splt){
             gen_cat[ii] <- 'value'
+        } else if('cummean' %in% splt){
+            gen_cat[ii] <- 'cum_reward'
         } else if(('acc' %in% splt) | ('gl' %in% splt)){
             gen_cat[ii] <- 'reward'
         } else if(('rdis' %in% splt) | ('exp' %in% splt) | ('gauss' %in% splt)){
             gen_cat[ii] <- 'similiarity'
-        } else if('distance' %in% splt){
+        } else if(('distance' %in% splt) |
+                  ('width' %in% splt) |
+                  ('angle' %in% splt)){
             gen_cat[ii] <- 'distance'
         } else if(('resp1' %in% splt) | ('cresp1' %in% splt) | ('rt' %in% splt)){
             gen_cat[ii] <- 'response'
