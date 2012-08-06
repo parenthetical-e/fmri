@@ -71,6 +71,8 @@ reclassify.scores <- function(score_data){
 
     gen_cat <- rep(NA, nrow(score_data))
     outcome_class <- rep(NA, nrow(score_data))
+    recode_class <- rep('standard', nrow(score_data))
+    acc_split <- rep('no', nrow(score_data))
     for(ii in 1:length(splitup)){
         splt <- splitup[[ii]]
 
@@ -81,16 +83,21 @@ reclassify.scores <- function(score_data){
             gen_cat[ii] <- 'value'
         } else if('cummean' %in% splt){
             gen_cat[ii] <- 'cum_reward'
-        } else if(('acc' %in% splt) | ('gl' %in% splt)){
+        } else if(('acc' %in% splt) | 
+                  ('gl' %in% splt)){
             gen_cat[ii] <- 'reward'
-        } else if(('rdis' %in% splt) | ('exp' %in% splt) | ('gauss' %in% splt)){
-            gen_cat[ii] <- 'similiarity'
+        } else if(('rdis' %in% splt) | 
+                  ('exp' %in% splt) |
+                  ('gauss' %in% splt)){
+            gen_cat[ii] <- 'control'
         } else if(('distance' %in% splt) |
                   ('width' %in% splt) |
                   ('angle' %in% splt)){
-            gen_cat[ii] <- 'distance'
-        } else if(('resp1' %in% splt) | ('cresp1' %in% splt) | ('rt' %in% splt)){
-            gen_cat[ii] <- 'response'
+            gen_cat[ii] <- 'control'
+        } else if(('resp1' %in% splt) | 
+                  ('cresp1' %in% splt) | 
+                  ('rt' %in% splt)){
+            gen_cat[ii] <- 'control'
         } else if('0' %in% splt){
             gen_cat[ii] <- 'univariate'
         } else { print(paste("No gen_cat detected at ", ii, "-", splt)) }
@@ -98,9 +105,21 @@ reclassify.scores <- function(score_data){
         # Then do outcome_class
         if('acc' %in% splt) { outcome_class[ii] <- 'acc' }
         else if('gl' %in% splt) { outcome_class[ii] <- 'gl' }
+
+        # Then sort based on the coding scheme
+        if('invert' %in% splt) { recode_class[ii] <- 'invert'}
+        else if ('pos' %in% splt) { recode_class[ii] <- 'positive'}
+        
+        # Regressors are split up by accuracy?
+        if(('0' %in% splt) & 
+           ('1' %in% splt) &
+           (gen_cat[ii] != 'univariate')) { acc_split[ii] <- 'yes' }
     }
+
     score_data$score_class <- as.factor(gen_cat)
     score_data$outcome_class <- as.factor(outcome_class)
+    score_data$recode_class <- as.factor(recode_class)
+    score_data$acc_split <- as.factor(acc_split)
     score_data
 }
 

@@ -1,20 +1,16 @@
 #! /usr/local/bin/python
-""" For Roi set 1 (see runrun.py) I foolished harded coded much of the 
-experimental detail in submodules (i.e. .data and .exps.  For the second 
-(see run2.py) and third (this round) I am creating only this top-level script
-to run the regressions and extract the scores.  """
 import os
 
 from fmri.catreward.roi.data import (get_durations, get_cumrewards,
-        get_trials_combined, get_behave_data, get_similarity_data)
+        get_trials, get_behave_data, get_similarity_data)
 from fmri.catreward.roi.misc import subdir
-from fmri.catreward.rl.data import get_rl_data
-from fmri.catreward.roi.exps import base as bclasses
+from fmri.catreward.rl.data import get_rl_data, recode_rl_data
+from fmri.catreward.roi.exps.base2 import Rewardrecode
 from roi.io import write_hdf, write_all_scores_as_df
 
 
-def main(num, roi_names, roi_class_name):
-    """ The main worker for run3.py.
+def main(num, roi_names):
+    """ The main worker for run4.py.
 
     <num> is a valid subject number code (101-118)
     <roi_names> is the names of the rois you wish to analyze
@@ -25,12 +21,12 @@ def main(num, roi_names, roi_class_name):
 
     # --
     # Get that Ss data and trial information.
-    trials = get_trials_combined()
+    trials = get_trials()
     durations = get_durations()
 
     sdata = get_behave_data(num)
     sdata.update(get_similarity_data(num))
-    sdata.update(get_rl_data(num))
+    sdata.update(recode_rl_data(get_rl_data(num)))
     sdata.update(get_cumrewards(num))
         ## Add all data to sdata, a dict
 
@@ -45,8 +41,7 @@ def main(num, roi_names, roi_class_name):
         spath = os.path.join(sdir, 'bold', name)
     
         # Init this roi's models
-        Roiclass = getattr(bclasses, roi_class_name)
-        roiglm = Roiclass(1.5, spath, trials, durations, sdata)
+        roiglm = Rewardrecode(1.5, spath, trials, durations, sdata)
 
         # Get, reformat (extract), and store the results.
         # And del it to keep memory reasonable
@@ -58,7 +53,7 @@ def main(num, roi_names, roi_class_name):
 if __name__ == "__main__":
     # --
     # Experimental variables
-    exp_name = "box_c_run3"
+    exp_name = "s_run4"
     roi_names = ["wartaskAB_Cingulate Gyrus, anterior division_bold.txt",
             "wartaskAB_Cingulate Gyrus, posterior division_bold.txt",
             "wartaskAB_Cuneal Cortex_bold.txt",
@@ -81,18 +76,16 @@ if __name__ == "__main__":
             "wartaskAB_Frontal Orbital Cortex_bold.txt"]
             ## This time do not both with the functional ROI data
 
-    roi_class_name = "CatMean"
-    
     #subjects = [101, ] # for debug
     subjects = [101, 102, 103, 104, 105, 106, 108, 109, 111, 112, 113, 114, 
-            115, 116, 117, 118]
+                115, 116, 117, 118]
 
     # -- 
     # Loop over subjects
     for sub in subjects:
         # main() does all the work, then write results
         print(sub)
-        sub_results = main(sub, roi_names, roi_class_name)
+        sub_results = main(sub, roi_names)
 
         print('Writing results.')  ## into a hdf5
         results_name = str(sub) + '_' + exp_name + '_roi_result.hdf5'

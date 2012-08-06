@@ -59,7 +59,7 @@ m.plot.AIC <- function(score_stats, plot_name){
 
     # And plot!
     for(roi in levels(M$roi_names)){
-        pdf(height=6, width=10)  ## real big for all the data!
+        pdf(height=11, width=8)  ## real big for all the data!
         print(roi)
         roi_data <- M[M$roi_names == roi, ]
         limits <- aes(ymin=(aic - min(aic)) - se, ymax=(aic - min(aic)) + se)

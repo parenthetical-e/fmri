@@ -6,17 +6,17 @@ s.boxplot.AIC <- function(score_data, plot_name){
 
     # And plot!
     for(roi in levels(score_data$roi_names)){
-        pdf(height=5, width=7.5)  ## real big for all the data!
+        pdf(height=10, width=8)  ## real big for all the data!
         print(roi)
         roi_data <- score_data[score_data$roi_names == roi, ]
         p <- ggplot(data=roi_data, aes(x=dm, 
-                                       y=aic - min(aic), 
+                                       y=aic, 
                                        colour=score_class)) 
-        p <- p + geom_boxplot()
-        p <- p + stat_summary(fun.y = "mean", geom="point", shape=2)        
+        p <- p + geom_boxplot(notch=TRUE)
+        #p <- p + stat_summary(fun.y = "mean", geom="point", shape=2)        
         p <- p + geom_hline(aes(yintercept=0), color="black")
-        p <- p + geom_hline(aes(yintercept=2), color="red", alpha=0.8)
-        p <- p + geom_hline(aes(yintercept=4), color="orange", alpha=0.8)
+        p <- p + geom_hline(aes(yintercept=-2), color="red", alpha=0.8)
+        p <- p + geom_hline(aes(yintercept=-4), color="orange", alpha=0.8)
         p <- p + coord_flip()
         p <- p + opts(title=paste(paste("s_boxplot_", 
                                         plot_name, 

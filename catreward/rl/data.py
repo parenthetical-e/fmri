@@ -1,6 +1,7 @@
 """ Routines to get subject <num>'s RL data. """
 import os
 import pandas
+import numpy as np
 
 import fmri
 
@@ -71,3 +72,31 @@ def get_rl_data(num):
 
     return rl_data
 
+
+def recode_rl_data(rl_data):
+    """ Transform all data in rl_data into several alternative (neuronal)
+        encoding schemes. """
+
+    for key, val in rl_data.items():
+        # Invert positive and negative values
+        rl_data[key + '_invert'] = val * -1
+
+        # Make negative postive
+        rl_data[key + '_pos'] = np.abs(val)
+
+    
+    # Now split up each entry in rl_data
+    # into 2 columns, based on accuracy.
+    is_1 = rl_data['acc'] == 1
+    is_0 = rl_data['acc'] == 0
+    for key, val in rl_data.items():
+        nrow = val.shape[0]
+
+        acc_regressors = np.zeros((nrow,2)) 
+        acc_regressors[is_1,0] = val[is_1]
+        acc_regressors[is_0,1] = val[is_0]
+        
+        rl_data[key + '_1'] = acc_regressors[:,0]
+        rl_data[key + '_0'] = acc_regressors[:,1]
+
+    return rl_data
