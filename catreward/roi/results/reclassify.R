@@ -82,24 +82,24 @@ reclassify.scores <- function(score_data){
         } else if('value' %in% splt){
             gen_cat[ii] <- 'value'
         } else if('cummean' %in% splt){
-            gen_cat[ii] <- 'cum_reward'
+            gen_cat[ii] <- 'control_cum_reward'
         } else if(('acc' %in% splt) | 
                   ('gl' %in% splt)){
-            gen_cat[ii] <- 'reward'
+            gen_cat[ii] <- 'control_reward'
         } else if(('rdis' %in% splt) | 
                   ('exp' %in% splt) |
                   ('gauss' %in% splt)){
-            gen_cat[ii] <- 'control'
+            gen_cat[ii] <- 'control_similarity'
         } else if(('distance' %in% splt) |
                   ('width' %in% splt) |
                   ('angle' %in% splt)){
-            gen_cat[ii] <- 'control'
+            gen_cat[ii] <- 'control_similarity'
         } else if(('resp1' %in% splt) | 
                   ('cresp1' %in% splt) | 
                   ('rt' %in% splt)){
-            gen_cat[ii] <- 'control'
+            gen_cat[ii] <- 'control_response'
         } else if('0' %in% splt){
-            gen_cat[ii] <- 'univariate'
+            gen_cat[ii] <- 'boxcar'
         } else { print(paste("No gen_cat detected at ", ii, "-", splt)) }
 
         # Then do outcome_class
@@ -113,7 +113,7 @@ reclassify.scores <- function(score_data){
         # Regressors are split up by accuracy?
         if(('0' %in% splt) & 
            ('1' %in% splt) &
-           (gen_cat[ii] != 'univariate')) { acc_split[ii] <- 'yes' }
+           (gen_cat[ii] != 'boxcar')) { acc_split[ii] <- 'yes' }
     }
 
     score_data$score_class <- as.factor(gen_cat)

@@ -10,27 +10,85 @@ s.boxplot.AIC <- function(score_data, plot_name){
         print(roi)
         roi_data <- score_data[score_data$roi_names == roi, ]
         p <- ggplot(data=roi_data, aes(x=dm, 
-                                       y=aic, 
+                                       y=aic_w, 
                                        colour=score_class)) 
-        p <- p + geom_boxplot(notch=TRUE)
-        #p <- p + stat_summary(fun.y = "mean", geom="point", shape=2)        
+        p <- p + geom_boxplot(notch=FALSE)
+        p <- p + stat_summary(fun.y = "mean", geom="point", shape=2)        
         p <- p + geom_hline(aes(yintercept=0), color="black")
-        p <- p + geom_hline(aes(yintercept=-2), color="red", alpha=0.8)
-        p <- p + geom_hline(aes(yintercept=-4), color="orange", alpha=0.8)
         p <- p + coord_flip()
+        p <- p + theme_bw()
         p <- p + opts(title=paste(paste("s_boxplot_", 
                                         plot_name, 
                                         "_aic_", 
                                         roi,sep="")))
         p <- p + scale_colour_brewer(palette="Dark2")
         plot(p)
-        ggsave(paste("s_boxplot_", plot_name, "_aic_", roi, ".pdf", sep=""))
+        ggsave(paste("f_boxplot_", plot_name, "_aic_", roi, ".pdf", sep=""))
     }
 
     # Get rid of all the open windows...
     graphics.off()
 }
 
+
+s.meanpoint.AIC <- function(score_data, plot_name){
+    # Given all the Ss aic data (from processscore_dataodelScore.R)
+    # make a nice plot for each ROI.
+    require(ggplot2)
+    source("~/Code/fmri/catreward/roi/results/filterdf.R")
+
+    # And plot!
+    for(roi in levels(score_data$roi_names)){
+        print(roi)
+        pdf(height=4, width=6)  ## real big for all the data!
+        roi_data <- score_data[score_data$roi_names == roi, ]
+        p <- ggplot(data=roi_data, aes(x=dm, 
+                                       y=aic_w, 
+                                       colour=score_class)) 
+        p <- p + stat_summary(fun.data = "mean_cl_boot",size=1)  
+        p <- p + geom_hline(aes(yintercept=0), color="black")
+        p <- p + coord_flip()
+        p <- p + scale_colour_brewer(palette="Dark2")
+        p <- p + ylab("Akaike Weight") + ylim(0, 0.10)
+        p <- p + xlab("Model")
+        p <- p + theme_bw()
+        plot(p)
+        ggsave(paste("f_meanpoint_", plot_name, "_aic_", roi, ".pdf", sep=""))
+    }
+
+    # Get rid of all the open windows...
+    graphics.off()
+}
+
+s.meanpoint.AIC.bilat <- function(score_data, plot_name){
+    # Given all the Ss aic data (from processscore_dataodelScore.R)
+    # make a nice plot for each ROI.
+    require(ggplot2)
+    source("~/Code/fmri/catreward/roi/results/filterdf.R")
+
+    # And plot!
+    for(roi in levels(score_data$bilat_class)){
+        pdf(height=4, width=9)  ## real big for all the data!
+        print(roi)
+        roi_data <- score_data[score_data$bilat_class == roi, ]
+        p <- ggplot(data=roi_data, aes(x=dm, 
+                                       y=aic_w, 
+                                       colour=score_class)) 
+        p <- p + stat_summary(fun.data = "mean_se",size=1)
+        p <- p + facet_grid(. ~ roi_names)
+        p <- p + geom_hline(aes(yintercept=0), color="black")
+        p <- p + coord_flip()
+        p <- p + ylab("Akaike Weight") + ylim(0, 0.10)
+        p <- p + xlab("Model")
+        p <- p + scale_colour_brewer(palette="Dark2")
+        p <- p + theme_bw()
+        plot(p)
+        ggsave(paste("f_meanpoint_bilat", plot_name, "_aic_", roi, ".pdf", sep=""))
+    }
+
+    # Get rid of all the open windows...
+    graphics.off()
+}
 
 
 s.plot.AIC <- function(score_data, plot_name){
@@ -39,9 +97,6 @@ s.plot.AIC <- function(score_data, plot_name){
     require(ggplot2)
     source("~/Code/fmri/catreward/roi/results/filterdf.R")
 
-    # Order p_levels
-    relev <- c("insignificant", "weak_trend", "trend", "significant")
-    score_data$p_levels <- factor(score_data$p_levels, levels=relev)
 
     # And plot!
     for(roi in levels(score_data$roi_names)){
@@ -49,14 +104,10 @@ s.plot.AIC <- function(score_data, plot_name){
         print(roi)
         roi_data <- score_data[score_data$roi_names == roi, ]
         p <- ggplot(data=roi_data, aes(x=dm, 
-                                       y=aic, 
-                                       colour=score_class,
-                                       alpha=p_levels)) 
+                                       y=aic_w, 
+                                       colour=score_class)) 
         p <- p + geom_point()
-        p <- p + stat_summary(fun.y = "mean", geom="bar", alpha=0.1)        
-        p <- p + geom_hline(aes(yintercept=0), color="black")
-        p <- p + geom_hline(aes(yintercept=-2), color="red", alpha=0.8)
-        p <- p + geom_hline(aes(yintercept=-4), color="orange", alpha=0.8)
+        #p <- p + stat_summary(fun.y = "mean_se", geom="bar", alpha=0.1)        
         p <- p + coord_flip()
         p <- p + opts(title=paste(paste("s_plot_", 
                                         plot_name, 
