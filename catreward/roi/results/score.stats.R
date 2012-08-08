@@ -24,3 +24,15 @@ score.stats <- function(score_data){
     stats$stat = as.factor(stats$stat)
     stats
 }
+
+
+score.stats.aic_w.familymeans <- function(score_data){
+    # Calculate means for the model families
+    
+    cond_on <- list(model_family=score_data$model_family,
+                    roi_names=score_data$roi_names)
+    M = aggregate(score_data[ ,"aic_w"], cond_on, mean, data=score_data)
+    M <- M[order(M$roi_names, M$x), ]
+    M
+}
+

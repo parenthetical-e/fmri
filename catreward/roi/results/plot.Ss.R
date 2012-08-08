@@ -11,7 +11,7 @@ s.boxplot.AIC <- function(score_data, plot_name){
         roi_data <- score_data[score_data$roi_names == roi, ]
         p <- ggplot(data=roi_data, aes(x=dm, 
                                        y=aic_w, 
-                                       colour=score_class)) 
+                                       colour=model_family)) 
         p <- p + geom_boxplot(notch=FALSE)
         p <- p + stat_summary(fun.y = "mean", geom="point", shape=2)        
         p <- p + geom_hline(aes(yintercept=0), color="black")
@@ -44,8 +44,8 @@ s.meanpoint.AIC <- function(score_data, plot_name){
         roi_data <- score_data[score_data$roi_names == roi, ]
         p <- ggplot(data=roi_data, aes(x=dm, 
                                        y=aic_w, 
-                                       colour=score_class)) 
-        p <- p + stat_summary(fun.data = "mean_cl_boot",size=1)  
+                                       colour=model_family)) 
+        p <- p + stat_summary(fun.data = "mean_se",size=.70)  
         p <- p + geom_hline(aes(yintercept=0), color="black")
         p <- p + coord_flip()
         p <- p + scale_colour_brewer(palette="Dark2")
@@ -73,7 +73,7 @@ s.meanpoint.AIC.bilat <- function(score_data, plot_name){
         roi_data <- score_data[score_data$bilat_class == roi, ]
         p <- ggplot(data=roi_data, aes(x=dm, 
                                        y=aic_w, 
-                                       colour=score_class)) 
+                                       colour=model_family)) 
         p <- p + stat_summary(fun.data = "mean_se",size=1)
         p <- p + facet_grid(. ~ roi_names)
         p <- p + geom_hline(aes(yintercept=0), color="black")
@@ -105,7 +105,7 @@ s.plot.AIC <- function(score_data, plot_name){
         roi_data <- score_data[score_data$roi_names == roi, ]
         p <- ggplot(data=roi_data, aes(x=dm, 
                                        y=aic_w, 
-                                       colour=score_class)) 
+                                       colour=model_family)) 
         p <- p + geom_point()
         #p <- p + stat_summary(fun.y = "mean_se", geom="bar", alpha=0.1)        
         p <- p + coord_flip()
@@ -140,7 +140,7 @@ s.bars.AIC <- function(score_data, plot_name){
         roi_data <- score_data[score_data$roi_names == roi, ]
         p <- ggplot(data=roi_data, aes(x=dm, 
                                        y=aic, 
-                                       colour=score_class, fill=score_class, alpha=p_levels)) 
+                                       colour=model_family, fill=model_family, alpha=p_levels)) 
         p <- p + facet_wrap(~sub) 
         p <- p + geom_bar(position="dodge")
         p <- p + geom_hline(aes(yintercept=0), color="black")
@@ -179,9 +179,9 @@ s.plot.llf <- function(score_data, plot_name){
         roi_data <- score_data[score_data$roi_names == roi, ]
         p <- ggplot(data=roi_data, aes(x=dm, 
                                        y=llf, 
-                                       colour=score_class,
+                                       colour=model_family,
                                        alpha=p_levels)) 
-        #p <- p + facet_grid(score_class~.) 
+        #p <- p + facet_grid(model_family~.) 
         p <- p + geom_point()
         p <- p + stat_summary(fun.y = "mean", geom="bar", alpha=0.1)        
         p <- p + geom_hline(aes(yintercept=0), color="black")
@@ -217,7 +217,7 @@ s.plot.r_adj <- function(score_data, plot_name){
         roi_data <- score_data[score_data$roi_names == roi, ]
         p <- ggplot(data=roi_data, aes(x=dm, 
                                        y=r_adj, 
-                                       colour=score_class,
+                                       colour=model_family,
                                        alpha=p_levels))  
         p <- p + geom_point()
         p <- p + stat_summary(fun.y = "mean", geom="bar", alpha=0.1)        

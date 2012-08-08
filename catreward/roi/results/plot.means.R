@@ -15,7 +15,7 @@ m.plot.fvalue <- function(f_results, plot_name){
         p <- ggplot(data=roi_data, aes(
                                        x=dm,
                                        y=fvalue, 
-                                       fill=score_class,
+                                       fill=model_family,
                                        alpha=p_levels))
         p <- p + geom_bar(colour="black")
         p <- p + coord_flip()
@@ -46,7 +46,7 @@ m.plot.fvalue.bilat <- function(f_results, plot_name){
         p <- ggplot(data=roi_data, aes(
                                        x=dm,
                                        y=fvalue, 
-                                       fill=score_class,
+                                       fill=model_family,
                                        alpha=p_levels))
         p <- p + geom_bar(colour="black") + facet_grid(. ~ roi_names)
         p <- p + coord_flip()

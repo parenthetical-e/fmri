@@ -116,7 +116,7 @@ reclassify.scores <- function(score_data){
            (gen_cat[ii] != 'boxcar')) { acc_split[ii] <- 'yes' }
     }
 
-    score_data$score_class <- as.factor(gen_cat)
+    score_data$model_family <- as.factor(gen_cat)
     score_data$outcome_class <- as.factor(outcome_class)
     score_data$recode_class <- as.factor(recode_class)
     score_data$acc_split <- as.factor(acc_split)
