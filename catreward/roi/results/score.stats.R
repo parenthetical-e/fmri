@@ -26,13 +26,40 @@ score.stats <- function(score_data){
 }
 
 
-score.stats.aic_w.familymeans <- function(score_data){
+score.stats.aic_w.familymeans <- function(aic){
     # Calculate means for the model families
     
-    cond_on <- list(model_family=score_data$model_family,
-                    roi_names=score_data$roi_names)
-    M = aggregate(score_data[ ,"aic_w"], cond_on, mean, data=score_data)
+    cond_on <- list(model_family=aic$model_family,
+                    roi_names=aic$roi_names)
+    M = aggregate(aic[ ,"aic_w"], cond_on, mean, data=aic)
     M <- M[order(M$roi_names, M$x), ]
     M
 }
 
+
+score.stats.aic_w <- function(aic){
+    # Calculate means for each model
+    source("~/Code/fmri/catreward/roi/results/filterdf.R")
+    source("~/Code/fmri/catreward/roi/results/import.all.scores.R")
+    source("~/Code/fmri/catreward/roi/results/reclassify.R")
+    source("~/Code/fmri/catreward/roi/results/score.stats.R")
+    source("~/Code/fmri/catreward/roi/results/normalize.R")
+    source("~/Code/fmri/catreward/roi/results/s.ftest.R")
+
+    # Then stats, conditionalized on:
+    cond_on <- list(dm=aic$dm, roi_names=aic$roi_names)
+    N = aggregate(aic[ ,"aic_w"], cond_on, length)
+    SD = aggregate(aic[ ,"aic_w"], cond_on, sd)
+    M = aggregate(aic[ ,"aic_w"], cond_on, mean)
+    SE <- SD[ ,"x"] / sqrt(N[ ,"x"])
+
+    # Assemble returned DF
+    stats <- list("M"=M$x, "SE"=SE, "roi_names"=M$roi_names, "dm"=M$dm)
+    stats <- as.data.frame(stats)
+    stats <- reclassify.rois(stats)
+    stats <- reclassify.scores(stats)
+    stats <- reclassify.as.bilateral(stats)
+    
+    stats <- stats[order(stats$roi_names, stats$M), ]
+    stats
+}
