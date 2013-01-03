@@ -56,6 +56,8 @@ score.stats.aic_w <- function(aic){
     # Assemble returned DF
     stats <- list("M"=M$x, "SE"=SE, "roi_names"=M$roi_names, "dm"=M$dm)
     stats <- as.data.frame(stats)
+    
+    # Create metadata
     stats <- reclassify.rois(stats)
     stats <- reclassify.scores(stats)
     stats <- reclassify.as.bilateral(stats)
