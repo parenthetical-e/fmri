@@ -7,10 +7,9 @@ It was the working repo for the original analysis, and could badly use better or
 Even the repo title `fmri` is misleading, because...
 
 It includes:
-
 - Behavoiral data 
-- RL models fit data for that the behavoiral data
-- loading functions for both data and models
+- RL model fit data for the behavoiral data
+- Loading functions for both data and models
 - fMRI preprocessing functions
 - Model-based fMRI analysis functions
 - Some misc plotting functions for data visualization in `R`
